@@ -1,4 +1,4 @@
-// src/components/CategoryFilter.jsx
+
     
 import React, { useState } from 'react';
 
@@ -17,7 +17,7 @@ function CategoryFilter({ onSelectCategory }) {
       <select value={category} onChange={handleSelect}>
         <option value="">Todas las categorías</option>
         <option value="electronics">Electrónica</option>
-        <option value="jewelery">Joyería</option> {/* Corregido el valor 'jewelery' */}
+        <option value="jewelery">Joyería</option> 
         <option value="men's clothing">Ropa de hombre</option>
         <option value="women's clothing">Ropa de mujer</option>
       </select>
