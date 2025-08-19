@@ -1,27 +1,32 @@
 // src/components/ProductList.jsx
-
+    
 import React, { useState, useEffect } from 'react';
 
-// Usaremos el estado para guardar los productos.
-function ProductList() {
-  const [products, setProducts] = useState([]);
+// El componente recibe la prop `category` desde el padre (App.jsx).
+function ProductList({ category }) {
+  // Estado para almacenar todos los productos obtenidos de la API.
+  const [allProducts, setAllProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // useEffect para manejar el efecto secundario de obtener datos de la API.
+  // useEffect para la llamada inicial a la API. Se ejecuta solo una vez.
   useEffect(() => {
-    // Esta función se ejecutará después de que el componente se renderice.
     fetch('https://fakestoreapi.com/products')
       .then(res => res.json())
       .then(data => {
-        
-        setProducts(data);
+        setAllProducts(data); // Guardamos todos los productos
         setLoading(false);
       })
       .catch(error => {
         console.error("Hubo un error al obtener los datos:", error);
         setLoading(false);
       });
-  }, []); 
+  }, []); // Array de dependencias vacío para que se ejecute una sola vez.
+
+  // Filtramos los productos según la categoría seleccionada.
+  // Esto se recalcula cada vez que `allProducts` o `category` cambian.
+  const filteredProducts = category
+    ? allProducts.filter(product => product.category === category)
+    : allProducts;
 
   if (loading) {
     return <p>Cargando productos...</p>;
@@ -29,10 +34,10 @@ function ProductList() {
 
   return (
     <div className="product-list">
-      <h2>Nuestros Productos</h2>
+      <h2>Productos</h2>
       <ul>
-        {products.map(product => (
-            <li key={product.id}>
+        {filteredProducts.map(product => (
+          <li key={product.id}>
             <img src={product.image} alt={product.title} width="100" />
             <h3>{product.title}</h3>
             <p>Precio: ${product.price}</p>
