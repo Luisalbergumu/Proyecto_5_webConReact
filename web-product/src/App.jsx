@@ -1,22 +1,32 @@
-import React, { useState } from 'react';
-import ProductList from './components/ProductList';
-import CategoryFilter from './components/CategoryFilter';
+
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import ProductsPage from './pages/ProductPages'; 
+import Home from './pages/Home';
 import './App.css';
 
 function App() {
-  
-  const [selectedCategory, setSelectedCategory] = useState('');
-  
-  const handleCategoryChange = (category) => {
-    setSelectedCategory(category);
-  };
-
   return (
-    <div className="app-container">
-      <h1>Fake Store</h1>
-      <CategoryFilter onSelectCategory={handleCategoryChange} />
-      <ProductList category={selectedCategory} />
-    </div>
+    <Router>
+      <div className="app-container">
+        
+        <nav>
+          <Link to="/">Inicio</Link> | <Link to="/products">Productos</Link>
+        </nav>
+        <hr />
+        
+        {/* Definición de las rutas */}
+        <Routes>
+          {/* Ruta para la página de inicio */}
+          <Route path="/" element={<Home />} />
+          
+          {/* Ruta para la página de productos */}
+          <Route path="/products" element={<ProductsPage />} />
+          
+          {/* Opcional: Ruta para manejar páginas no encontradas (404) */}
+          <Route path="*" element={<h1>404: Página no encontrada</h1>} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
