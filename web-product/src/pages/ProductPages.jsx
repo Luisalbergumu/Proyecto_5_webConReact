@@ -1,26 +1,42 @@
+// src/pages/ProductsPage.jsx
+
 import React, { useState, useEffect } from 'react';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
+import Typography from '@mui/material/Typography';
+import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
+import CategoryFilter from '../components/CategoryFilter';
+import Container from '@mui/material/Container'; 
 
-// El componente recibe la prop `category` desde el padre (App.jsx).
-function ProductList({ category }) {
-
+function ProductsPage() {
   const [allProducts, setAllProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  
+  const [selectedCategory, setSelectedCategory] = useState('');
+
+
   useEffect(() => {
     fetch('https://fakestoreapi.com/products')
       .then(res => res.json())
       .then(data => {
-        setAllProducts(data); // Guardamos todos los productos
+        setAllProducts(data);
         setLoading(false);
       })
       .catch(error => {
         console.error("Hubo un error al obtener los datos:", error);
         setLoading(false);
       });
-  }, []); 
+  }, []);
 
-  const filteredProducts = category
-    ? allProducts.filter(product => product.category === category)
+  
+  const handleCategoryChange = (category) => {
+    setSelectedCategory(category);
+  };
+
+
+  const filteredProducts = selectedCategory
+    ? allProducts.filter(product => product.category === selectedCategory)
     : allProducts;
 
   if (loading) {
@@ -28,19 +44,38 @@ function ProductList({ category }) {
   }
 
   return (
-    <div className="product-list">
-      <h2>Productos</h2>
-      <ul>
-        {filteredProducts.map(product => (
-          <li key={product.id}>
-            <img src={product.image} alt={product.title} width="100" />
-            <h3>{product.title}</h3>
-            <p>Precio: ${product.price}</p>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <Container>
+      <Box sx={{ flexGrow: 1, padding: 2 }}>
+        {/* Aquí importamos y usamos el componente de filtro */}
+        {/* Le pasamos la función para que actualice el estado local */}
+        <CategoryFilter onSelectCategory={handleCategoryChange} />
+
+        <Grid container spacing={4} sx={{ mt: 2 }}>
+          {filteredProducts.map(product => (
+            <Grid item xs={12} sm={6} md={4} key={product.id}>
+              <Card>
+                <CardMedia
+                  component="img"
+                  height="140"
+                  image={product.image}
+                  alt={product.title}
+                  sx={{ objectFit: 'contain' }}
+                />
+                <CardContent>
+                  <Typography gutterBottom variant="h5" component="div">
+                    {product.title}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    ${product.price}
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      </Box>
+    </Container>
   );
 }
 
-export default ProductList;
+export default ProductsPage;
