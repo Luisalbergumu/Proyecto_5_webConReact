@@ -1,11 +1,9 @@
-.app-container{
-  font-family: sans-serif;
-  text-align: center;
-  padding: 20px;
-  background-color: rgb(209, 223, 228);
-  border-radius: 5px;
+.MuiCard-root {
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  cursor: pointer;
 }
 
-h1{
-  color: #333;
+.MuiCard-root:hover {
+  transform: translateY(-5px); /* Mover hacia arriba */
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2); /* Sombra más grande */
 }

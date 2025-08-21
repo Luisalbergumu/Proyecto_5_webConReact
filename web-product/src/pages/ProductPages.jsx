@@ -1,5 +1,3 @@
-// src/pages/ProductsPage.jsx
-
 import React, { useState, useEffect } from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -8,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import CategoryFilter from '../components/CategoryFilter';
-import Container from '@mui/material/Container'; 
+import Container from '@mui/material/Container';
 
 function ProductsPage() {
   const [allProducts, setAllProducts] = useState([]);
@@ -29,12 +27,12 @@ function ProductsPage() {
       });
   }, []);
 
-  
+
   const handleCategoryChange = (category) => {
     setSelectedCategory(category);
   };
 
-
+  
   const filteredProducts = selectedCategory
     ? allProducts.filter(product => product.category === selectedCategory)
     : allProducts;
@@ -44,10 +42,9 @@ function ProductsPage() {
   }
 
   return (
-    <Container>
+    <Container style={{ backgroundColor: '#f0f4f7', minHeight: '100vh', padding: '20px' }}>
       <Box sx={{ flexGrow: 1, padding: 2 }}>
-        {/* Aquí importamos y usamos el componente de filtro */}
-        {/* Le pasamos la función para que actualice el estado local */}
+    
         <CategoryFilter onSelectCategory={handleCategoryChange} />
 
         <Grid container spacing={4} sx={{ mt: 2 }}>
