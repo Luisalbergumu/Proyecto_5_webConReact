@@ -1,3 +1,5 @@
+// src/pages/ProductsPage.jsx
+
 import React, { useState, useEffect } from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -8,14 +10,17 @@ import Box from '@mui/material/Box';
 import CategoryFilter from '../components/CategoryFilter';
 import Container from '@mui/material/Container';
 
+
+const API_URL = import.meta.env.VITE_API_URL;
+
 function ProductsPage() {
   const [allProducts, setAllProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState('');
 
-
   useEffect(() => {
-    fetch('https://fakestoreapi.com/products')
+    
+    fetch(`${API_URL}/products`)
       .then(res => res.json())
       .then(data => {
         setAllProducts(data);
@@ -27,12 +32,10 @@ function ProductsPage() {
       });
   }, []);
 
-
   const handleCategoryChange = (category) => {
     setSelectedCategory(category);
   };
 
-  
   const filteredProducts = selectedCategory
     ? allProducts.filter(product => product.category === selectedCategory)
     : allProducts;
@@ -44,9 +47,7 @@ function ProductsPage() {
   return (
     <Container style={{ backgroundColor: '#f0f4f7', minHeight: '100vh', padding: '20px' }}>
       <Box sx={{ flexGrow: 1, padding: 2 }}>
-    
         <CategoryFilter onSelectCategory={handleCategoryChange} />
-
         <Grid container spacing={4} sx={{ mt: 2 }}>
           {filteredProducts.map(product => (
             <Grid item xs={12} sm={6} md={4} key={product.id}>
